@@ -1,13 +1,13 @@
 from django.db import models
 
-class StatYear(models.Model):
+class StatsYear(models.Model):
     year = models.IntegerField(primary_key=True)
     year_name = models.CharField(max_length=255)
-    class Meta:
-        db_table = 'stats_year'
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     hash_cash = models.FloatField()
+    class Meta:
+        db_table = 'stats_year'
     def __str__(self):
         return self.year_name
 
@@ -39,10 +39,10 @@ class Role(models.Model):
     role_description = models.CharField(max_length=255)
     hash_cash_exempt = models.BooleanField()
 
-class StatYearRoles(models.Model):
-    stats_year_id = models.ForeignKey(StatYear, on_delete=models.CASCADE)
+class StatsYearRoles(models.Model):
+    stats_year_id = models.ForeignKey(StatsYear, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Role, on_delete=models.CASCADE)
-    office_holder = models.ForeignKey(Hasher.id, on_delete=models.CASCADE)
+    office_holder = models.ForeignKey(Hasher, on_delete=models.CASCADE)
     class Meta:
         db_table = 'stats_year_roles'
 
