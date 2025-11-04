@@ -22,14 +22,14 @@ class Hasher(models.Model):
     current_kennel = models.CharField(max_length=30)
     birth_date = models.DateField()
     email = models.EmailField()
-    address = models.TextField()
-    city = models.TextField()
-    state_province = models.TextField()
-    zip_postal_code = models.TextField()
-    country = models.TextField()
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    state_province = models.CharField(max_length=25)
+    zip_postal_code = models.CharField(max_length=10)
+    country = models.CharField(max_length=50)
     mugshot = models.ImageField
     hash_cash_balance = models.FloatField()
-    hash_cash_exampe = models.BooleanField()
+    hash_cash_exempt = models.BooleanField()
     def __str__(self):
         return self.hash_name
 
