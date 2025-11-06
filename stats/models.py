@@ -38,13 +38,18 @@ class Role(models.Model):
     role_name = models.CharField(max_length=255)
     role_description = models.CharField(max_length=255)
     hash_cash_exempt = models.BooleanField()
+    def __str__(self):
+        return self.role_name
 
 class StatsYearRoles(models.Model):
     stats_year_id = models.ForeignKey(StatsYear, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Role, on_delete=models.CASCADE)
     office_holder = models.ForeignKey(Hasher, on_delete=models.CASCADE)
     class Meta:
-        db_table = 'stats_year_roles'
+        db_table = 'stats_year_role'
+        verbose_name_plural = "Stats year roles"  # Prevents "Newss" in the admin
+    def __str__(self):
+        return self.role_id.role_name
 
 
 
