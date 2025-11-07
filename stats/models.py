@@ -61,7 +61,7 @@ class Award(models.Model):
         return self.award_name
 
 class Trail(models.Model):
-    id = models.IntegerField(primary_key=True)
+    trail_id = models.IntegerField(primary_key=True)
     stats_year_id = models.ForeignKey(StatsYear, on_delete=models.CASCADE)
     trail_date = models.DateField()
     trail_description = models.CharField(max_length=255)
