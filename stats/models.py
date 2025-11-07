@@ -80,9 +80,13 @@ class Trail(models.Model):
     namings = models.ManyToManyField(Hasher, related_name='trail_namings')
     cases = models.FloatField()
     published_in_stats = models.BooleanField()
+    def __str__(self):
+        return str(self.trail_id)
 
 class Pack(models.Model):
     trail_id = models.ForeignKey(Trail, on_delete=models.CASCADE)
     hasher_id = models.ForeignKey(Hasher, on_delete=models.CASCADE)
     name_at_trail = models.CharField(max_length=255)
     hare = models.BooleanField()
+    def __str__(self):
+        return str(self.trail_id)

@@ -7,10 +7,16 @@ class StatsYearRolesAdmin(admin.ModelAdmin):
 class AwardAdmin(admin.ModelAdmin):
     list_display = ('num_trails', 'award_name', 'stats_year_id')
 
+class TrailAdmin(admin.ModelAdmin):
+    list_display = ('trail_id', 'trail_date', 'trail_description')
+
+class PackAdmin(admin.ModelAdmin):
+    list_display = ('trail_id', 'hasher_id', 'hare')
+
 admin.site.register(StatsYear)
 admin.site.register(StatsYearRoles, StatsYearRolesAdmin)
 admin.site.register(Hasher)
 admin.site.register(Role)
 admin.site.register(Award, AwardAdmin)
-admin.site.register(Trail)
-admin.site.register(Pack)
+admin.site.register(Trail, TrailAdmin)
+admin.site.register(Pack, PackAdmin)
