@@ -51,5 +51,38 @@ class StatsYearRoles(models.Model):
     def __str__(self):
         return self.role_id.role_name
 
+class Award(models.Model):
+    id = models.AutoField(primary_key=True)
+    stats_year_id = models.ForeignKey(StatsYear, on_delete=models.CASCADE)
+    award_name = models.CharField(max_length=100)
+    award_description = models.CharField(max_length=255)
+    num_trails = models.IntegerField()
+    def __str__(self):
+        return self.award_name
 
+class Trail(models.Model):
+    id = models.IntegerField(primary_key=True)
+    stats_year_id = models.ForeignKey(StatsYear, on_delete=models.CASCADE)
+    trail_date = models.DateField()
+    trail_description = models.CharField(max_length=255)
+    trail_start = models.TimeField()
+    trail_start_location = models.CharField(max_length=255)
+    checks = models.TextField()
+    trail_end = models.TimeField()
+    trail_end_location = models.CharField(max_length=255)
+    map = models.ImageField()
+    trash = models.FileField(upload_to='trails/trash')
+    video = models.FileField(upload_to='trails/video')
+    distance_turkey = models.FloatField()
+    distance_eagle = models.FloatField()
+    temperature = models.FloatField()
+    visitors = models.ManyToManyField(Hasher, related_name='trail_visitors')
+    namings = models.ManyToManyField(Hasher, related_name='trail_namings')
+    cases = models.FloatField()
+    published_in_stats = models.BooleanField()
 
+class Pack(models.Model):
+    trail_id = models.ForeignKey(Trail, on_delete=models.CASCADE)
+    hasher_id = models.ForeignKey(Hasher, on_delete=models.CASCADE)
+    name_at_trail = models.CharField(max_length=255)
+    hare = models.BooleanField()
