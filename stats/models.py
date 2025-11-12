@@ -11,6 +11,16 @@ class StatsYear(models.Model):
     def __str__(self):
         return self.year_name
 
+class HasherStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    abbreviation = models.CharField(max_length=5)
+    description = models.CharField(max_length=100)
+    class Meta:
+        verbose_name_plural = "Hasher statuses"  # Prevents "Newss" in the admin
+    def __str__(self):
+        return self.name
+
 class Hasher(models.Model):
     id = models.AutoField(primary_key=True)
     hash_name = models.CharField(max_length=69)
@@ -28,6 +38,8 @@ class Hasher(models.Model):
     zip_postal_code = models.CharField(max_length=10)
     country = models.CharField(max_length=50)
     mugshot = models.ImageField
+    first_trail = models.ForeignKey('Trail', on_delete=models.SET_NULL, null=True)
+    status = models.ForeignKey(HasherStatus, on_delete=models.SET_NULL, null=True)
     hash_cash_balance = models.FloatField()
     hash_cash_exempt = models.BooleanField()
     def __str__(self):

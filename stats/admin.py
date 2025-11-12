@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import StatsYear, StatsYearRoles, Hasher, Role, Award, Trail, Pack
+from .models import StatsYear, StatsYearRoles, HasherStatus, Hasher, Role, Award, Trail, Pack
 
 class StatsYearRolesAdmin(admin.ModelAdmin):
     list_display = ('stats_year_id', 'role_id', 'office_holder')
@@ -13,8 +13,12 @@ class TrailAdmin(admin.ModelAdmin):
 class PackAdmin(admin.ModelAdmin):
     list_display = ('trail_id', 'hasher_id', 'hare')
 
+class HasherStatusAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+
 admin.site.register(StatsYear)
 admin.site.register(StatsYearRoles, StatsYearRolesAdmin)
+admin.site.register(HasherStatus, HasherStatusAdmin)
 admin.site.register(Hasher)
 admin.site.register(Role)
 admin.site.register(Award, AwardAdmin)
