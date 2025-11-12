@@ -70,7 +70,7 @@ class Trail(models.Model):
     checks = models.TextField()
     trail_end = models.TimeField()
     trail_end_location = models.CharField(max_length=255)
-    map = models.ImageField()
+    map = models.FileField(upload_to='trails/map')
     trash = models.FileField(upload_to='trails/trash')
     video = models.FileField(upload_to='trails/video')
     distance_turkey = models.FloatField()
