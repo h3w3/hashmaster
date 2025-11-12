@@ -1,5 +1,7 @@
 .idea
 __pycache__/
+media/
+static/
 
 # Operating System files
 .DS_Store
