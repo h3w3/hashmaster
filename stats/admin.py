@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import StatsYear, StatsYearRoles, HasherStatus, Hasher, Role, Award, Trail, Pack
+from .models import StatsYear, StatsYearRoles, HasherStatus, Hasher, Role, Award, Trail, Pack, TrailPhoto
+
 
 class StatsYearRolesAdmin(admin.ModelAdmin):
     list_display = ('stats_year_id', 'role_id', 'office_holder')
@@ -16,6 +17,9 @@ class PackAdmin(admin.ModelAdmin):
 class HasherStatusAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
+class TrailPhotoAdmin(admin.ModelAdmin):
+     list_display = ('trail_id', 'caption', 'photo')
+
 admin.site.register(StatsYear)
 admin.site.register(StatsYearRoles, StatsYearRolesAdmin)
 admin.site.register(HasherStatus, HasherStatusAdmin)
@@ -24,3 +28,4 @@ admin.site.register(Role)
 admin.site.register(Award, AwardAdmin)
 admin.site.register(Trail, TrailAdmin)
 admin.site.register(Pack, PackAdmin)
+admin.site.register(TrailPhoto, TrailPhotoAdmin)

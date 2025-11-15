@@ -102,3 +102,12 @@ class Pack(models.Model):
     hare = models.BooleanField()
     def __str__(self):
         return str(self.trail_id)
+
+class TrailPhoto(models.Model):
+    trail_id = models.ForeignKey(Trail, on_delete=models.CASCADE)
+    caption = models.CharField(max_length=255, blank=True, null=False)
+    photo = models.ImageField(upload_to='trails/photos')
+    def __str__(self):
+        if self.photo:
+            return self.photo.url
+        return f"No image for {self.caption}"
