@@ -2,7 +2,7 @@ from django.db import models
 
 class StatsYear(models.Model):
     year = models.IntegerField(primary_key=True)
-    year_name = models.CharField(max_length=255)
+    year_name = models.CharField(max_length=69)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     hash_cash = models.FloatField()
@@ -105,8 +105,9 @@ class Pack(models.Model):
 
 class TrailPhoto(models.Model):
     trail_id = models.ForeignKey(Trail, on_delete=models.CASCADE)
-    caption = models.CharField(max_length=255, blank=True, null=False)
+    attribution = models.ForeignKey(Hasher, on_delete=models.CASCADE, blank=True, null=True)
     photo = models.ImageField(upload_to='trails/photos')
+    caption = models.CharField(max_length=255, blank=True, null=False)
     def __str__(self):
         if self.photo:
             return self.photo.url
