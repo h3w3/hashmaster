@@ -4,4 +4,14 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("trails/", views.trails, name="trails"),
+    path("trails/<int:trail_id>/", views.trail, name="trail"),
+    path("trails/<int:trail_id>/map/", views.map, name="map"),
+    path("trails/<int:trail_id>/pack/", views.pack, name="pack"),
+    path("trails/<int:trail_id>/trash/", views.trash, name="trash"),
+    path("trails/<int:trail_id>/hares/", views.hares, name="hares"),
+    path("hashers/", views.hashers, name="hashers"),
+    path("hashers/<str:hasher_name>/", views.hasher_name, name="hasher_name"),
+    path("<int:year>/", views.stats_year, name="stats_year"),
+
 ]
