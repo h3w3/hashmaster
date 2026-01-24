@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Hashers</title>
+    <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
+</head>
+<body>
+<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
+<h1>Austin Hash House Harriers</h1>
+<h2><a href="{% url 'index' %}">Stats</a> > Years</h2>
+<hr/>
+
+{% if all_stats_years %}
+     <table cellpadding = "10">
+         <tr align="left">
+             <th>Year</th>
+             <th>Year Name</th>
+             <th>Start Date</th>
+             <th>End Date</th>
+         </tr>
+          {% for stats_year in all_stats_years %}
+             <tr>
+               <td><a href="{% url 'stats_year' stats_year.year %}">{{ stats_year.year }}</a></td>
+               <td>{{ stats_year.year_name }}</td>
+               <td>{{ stats_year.start_date }}</td>
+               <td>{{ stats_year.end_date }}</td>
+
+             </tr>
+           {% endfor %}
+     </table>
+
+{% else %}
+    <p>No stats years are available.</p>
+{% endif %}
+
+<hr />
+<i>Hashmaster v.0.1.69</i>
+
+</body>
+</html>
