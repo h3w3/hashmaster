@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hares</title>
+    <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
+</head>
+
+<body>
+<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
+<h1>Austin Hash House Harriers</h1>
+<h2><a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a>  > <a href="{% url 'trail' trail %}">{{ trail }}</a> > Hares</h2>
+
+<hr/>
+
+{% if hares %}
+<table cellpadding="10">
+{% for hare in hares %}
+<tr>
+<td>{% if hare.hasher_id.mugshot %}
+<img width=100 src="{{ hare.hasher_id.mugshot.url }}">
+    {% else %}
+    No picture
+    {% endif %}
+</td>
+<td><a href="{% url 'hasher' hare.hasher_id.id %}">{{ hare.hasher_id.hash_name }}</a></td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+<hr />
+<i>Hashmaster v.0.1.69</i>
+
+</body>
+</html>

@@ -1,10 +1,134 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trail</title>
+    <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
 </head>
 <body>
+<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
+<h1>Austin Hash House Harriers</h1>
+<h2><a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a> > {{trail.trail_id }}</h2>
+
+<hr/>
+<h1>Trail #{{ trail.trail_id }}</h1>
+<h2>{{ trail.trail_date }} - {{ trail.trail_description }}</h2>
+
+{% if trail.video %}
+<video controls width="640" height="480">
+  <source src="{{ trail.video.url }}" type="video/mp4" />
+</video>
+{% endif %}
+
+<h3>Hares</h3>
+{% if hares %}
+<table cellpadding="10">
+{% for hare in hares %}
+<tr>
+<td>{% if hare.hasher_id.mugshot %}
+<img width=100 src="{{ hare.hasher_id.mugshot.url }}">
+    {% else %}
+    No picture
+    {% endif %}
+</td>
+<td><a href="{% url 'hasher' hare.hasher_id.id %}">{{ hare.hasher_id.hash_name }}</a></td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No hares for this trail.</p>
+{% endif %}
+
+<hr/>
+
+<h3>Trail Information</h3>
+<table cellpadding="10">
+    <tr>
+        <td><b>Trail Start</b></td>
+        <td>{{ trail.trail_start }}</td>
+    </tr>
+    <tr>
+        <td><b>Trail Start Location</b></td>
+        <td>{{ trail.trail_start_location }}</td>
+    </tr>
+     <tr>
+        <td><b>Checks</b></td>
+        <td>{{ trail.checks }}</td>
+    </tr>
+     <tr>
+        <td><b>Trail End</b></td>
+        <td>{{ trail.trail_end }}</td>
+    </tr>
+    <tr>
+        <td><b>Trail End Location</b></td>
+        <td>{{ trail.trail_end_location }}</td>
+    </tr>
+    <tr>
+        <td><b>Distance</b></td>
+        <td>{{ trail.distance_turkey }}</td>
+    </tr>
+    <tr>
+        <td><b>Temperature</b></td>
+        <td>{{ trail.temperature }}</td>
+    </tr>
+    <tr>
+        <td><b>Pack</a></b></td>
+        <td><a href="{% url 'pack' trail.trail_id %}">{{ pack.count }} Hounds</a></td>
+    </tr>
+    <tr>
+        <td><b>Map</b></td>
+        <td><a href="/media/{{ trail.map }}">"<img width=50% src="/media/{{ trail.map }}"></a></td>
+    </tr>
+    <tr>
+        <td><b>Visitors</b></td>
+        {% if trail.visitors %}
+        <td>
+          {% for visitor in trail.visitors.all %}
+             <a href="{% url 'hasher' visitor.id %}">{{ visitor }}</a><br/>
+          {% endfor %}
+        </td>
+        {% else %}
+        <td>No visitors</td>
+        {% endif %}
+    </tr>
+     <tr>
+        <td><b>Namings</b></td>
+        <td>{{ trail.namings }}</td>
+    </tr>
+</table>
+
+<hr/>
+
+<h3>Photos</h3>
+
+{% if trail_photos %}
+
+<p>Here are the photos from Trail #{{ trail.trail_id }}. Click on a photo
+to get the original sized version.</p>
+<table cellpadding="10">
+<tr align="left">
+    <th>Photo</th>
+    <th>Caption</th>
+    <th>Attribution</th>
+</tr>
+{% for photo in trail_photos %}
+    <tr>
+        <td><a href="{{ photo }}"><img width=300 src="{{ photo }}"></a></td>
+        <td>{{ photo.caption }}</td>
+        <td><a href="{% url 'hasher' photo.attribution.id %}">{{ photo.attribution }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+
+<p>No photos for this trail.</p>
+
+{% endif %}
+
+<hr />
+<i>Hashmaster v.0.1.69</i>
 
 </body>
 </html>

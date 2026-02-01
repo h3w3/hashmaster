@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hasher</title>
+        <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
+</head>
+<body>
+<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
+<h1>Austin Hash House Harriers</h1>
+<h2><a href="{% url 'index' %}">Stats</a> > <a href="{% url 'hashers' %}">Hashers</a>  > {{ hasher.hash_name }}</h2>
+{% if hasher.mugshot %}
+<p><img width=200 src="{{ hasher.mugshot.url }}">
+{% endif %}
+
+<hr/>
+<h2>Trail Stats</h2>
+<table cellpadding = "10">
+<tr valign = "top">
+    <td><b>Total trails</b></br>
+    {{ hasher_trails.count }}
+    </td>
+    <td><b>First Trail</b></br><a href="{% url 'trail' hasher.first_trail %}">{{ hasher.first_trail }}</a>
+    </td>
+    <td><b>Latest Trail</b><br/>
+        {% if latest_trail %}
+         <a href="{% url 'trail' latest_trail%}">{{ latest_trail }}</a>
+        {% endif %}
+    </td>
+</tr>
+</table>
+
+<h2>Nerd Information</h2>
+<p><i>You can opt-out this hasher only public information by contacting <a href="mailto:hashcash@austinh3.org?subject=Opt Out">Hash Cash</a></i></p>
+<table cellpadding = "10">
+<tr valign = "top">
+    <td><b>Nerd Name</b></br>
+    <h3>{{ hasher.nerd_first }} {{ hasher.nerd_last }}</h3></td>
+    <td><b>Address</b><br/>
+    {{ hasher.address }}<br/>
+    {{ hasher.city }}, {{ hasher.state_province }}<br/>
+    {{ hasher.zip_postal_code }}
+    </td>
+    <td style="vertical-align: top;"><b>Nickname</b></br>{{ hasher.hash_nickname }} </td>
+    <td><b>Phone</b></br>{{ hasher.phone }} </td>
+    <td><b>Email</b></br><a href=mailto:"{{ hasher.email }}">{{ hasher.email }}</a></td>
+</tr>
+</table>
+
+<hr />
+<i>Hashmaster v.0.1.69</i>
+
+</body>
+</html>

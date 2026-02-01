@@ -21,6 +21,7 @@
        <th>Date</th>
        <th>Stats year</th>
        <th>Map</th>
+       <th>Pack</th>
        <th>Trash</th>
        <th>Video</th>
       </tr>
@@ -39,7 +40,10 @@
              {{ trail.stats_year_id }}
           </td>
            <td>
-             <a href="/media/{{ trail.map }}">Map</a>
+             <a href="{% url 'trail' trail.trail_id %}map">Map</a>
+          </td>
+             <td>
+            <a href="{% url 'trail' trail.trail_id %}pack">Pack</a>
           </td>
            <td>
              <a href="/media/{{ trail.trash }}">Trash</a>
