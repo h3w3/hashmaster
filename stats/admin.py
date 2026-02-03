@@ -30,7 +30,7 @@ class HasherStatusAdmin(admin.ModelAdmin):
     ordering = ['name']
 
 class TrailPhotoAdmin(admin.ModelAdmin):
-     list_display = ('trail_id', 'caption', 'photo')
+     list_display = ('trail_id', 'caption', 'attribution', 'photo')
 
 class RoleAdmin(admin.ModelAdmin):
      list_display = ('role_name', 'role_description')
