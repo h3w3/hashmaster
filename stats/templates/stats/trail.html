@@ -23,7 +23,7 @@
 
 <h3>Hares</h3>
 {% if hares %}
-<table cellpadding="10">
+<table>
 {% for hare in hares %}
 <tr>
 <td>{% if hare.hasher_id.mugshot %}
@@ -43,7 +43,7 @@
 <hr/>
 
 <h3>Trail Information</h3>
-<table cellpadding="10">
+<table>
     <tr>
         <td><b>Trail Start</b></td>
         <td>{{ trail.trail_start }}</td>
@@ -106,8 +106,8 @@
 
 <p>Here are the photos from Trail #{{ trail.trail_id }}. Click on a photo
 to get the original sized version.</p>
-<table cellpadding="10">
-<tr align="left">
+<table>
+<tr>
     <th>Photo</th>
     <th>Caption</th>
     <th>Attribution</th>
@@ -116,7 +116,11 @@ to get the original sized version.</p>
     <tr>
         <td><a href="{{ photo }}"><img width=300 src="{{ photo }}"></a></td>
         <td>{{ photo.caption }}</td>
-        <td><a href="{% url 'hasher' photo.attribution.id %}">{{ photo.attribution }}</a></td>
+        <td>
+        {% if photo.attribution %}
+           <a href="{% url 'hasher' photo.attribution.id %}">{{ photo.attribution.hash_name }}</a>
+        {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>

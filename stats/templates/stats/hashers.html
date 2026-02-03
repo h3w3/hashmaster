@@ -12,9 +12,10 @@
 <h2><a href="{% url 'index' %}">Stats</a> > Hashers</h2>
 <hr/>
 
+<h3>Active and Lost on Trail Only</h3>
 {% if all_hashers %}
-     <table cellpadding = "10">
-         <tr align="left">
+     <table>
+         <tr>
              <th>Hasher name</th>
              <th>Hash nickname</th>
              <th>Nerd first</th>
@@ -33,7 +34,7 @@
      </table>
 
 {% else %}
-    <p>No hashers are available.</p>
+    <p>No active hashers are available.</p>
 {% endif %}
 
 <hr />

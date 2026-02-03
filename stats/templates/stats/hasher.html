@@ -15,36 +15,39 @@
 {% endif %}
 
 <hr/>
-<h2>Trail Stats</h2>
-<table cellpadding = "10">
-<tr valign = "top">
+<h2>Hasher Stats</h2>
+<table>
+<tr>
     <td><b>Total trails</b></br>
     {{ hasher_trails.count }}
     </td>
-    <td><b>First Trail</b></br><a href="{% url 'trail' hasher.first_trail %}">{{ hasher.first_trail }}</a>
+    <td><b>First Trail</b></br><a href="{% url 'trail' first_trail %}">{{ first_trail }}</a>
     </td>
     <td><b>Latest Trail</b><br/>
         {% if latest_trail %}
          <a href="{% url 'trail' latest_trail%}">{{ latest_trail }}</a>
         {% endif %}
     </td>
+    <td style="vertical-align: top;"><b>Nickname</b></br>{{ hasher.hash_nickname }} </td>
+    <td style="vertical-align: top;"><b>Status</b></br>{{ hasher_status.name }} </td>
+
+
 </tr>
 </table>
 
-<h2>Nerd Information</h2>
+<h2>Nerd Deets</h2>
 <p><i>You can opt-out this hasher only public information by contacting <a href="mailto:hashcash@austinh3.org?subject=Opt Out">Hash Cash</a></i></p>
-<table cellpadding = "10">
-<tr valign = "top">
-    <td><b>Nerd Name</b></br>
+<table>
+<tr>
+    <td style="vertical-align: top;"><b>Nerd Name</b></br>
     <h3>{{ hasher.nerd_first }} {{ hasher.nerd_last }}</h3></td>
-    <td><b>Address</b><br/>
+    <td style="vertical-align: top;"><b>Address</b><br/>
     {{ hasher.address }}<br/>
     {{ hasher.city }}, {{ hasher.state_province }}<br/>
     {{ hasher.zip_postal_code }}
     </td>
-    <td style="vertical-align: top;"><b>Nickname</b></br>{{ hasher.hash_nickname }} </td>
-    <td><b>Phone</b></br>{{ hasher.phone }} </td>
-    <td><b>Email</b></br><a href=mailto:"{{ hasher.email }}">{{ hasher.email }}</a></td>
+    <td style="vertical-align: top;"><b>Phone</b></br>{{ hasher.phone }} </td>
+    <td style="vertical-align: top;"><b>Email</b></br><a href=mailto:"{{ hasher.email }}">{{ hasher.email }}</a></td>
 </tr>
 </table>
 

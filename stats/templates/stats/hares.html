@@ -15,7 +15,9 @@
 <hr/>
 
 {% if hares %}
-<table cellpadding="10">
+<h3>{{ hares.count }} Hares</h3>
+
+<table>
 {% for hare in hares %}
 <tr>
 <td>{% if hare.hasher_id.mugshot %}

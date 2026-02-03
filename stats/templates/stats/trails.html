@@ -14,14 +14,15 @@
 <hr/>
 
 {% if all_trails %}
-   <table cellpadding = "10">
-     <tr align="left">
-       <th>Trail number</th>
+   <table>
+     <tr>
+       <th>Trail</th>
        <th>Description</th>
        <th>Date</th>
        <th>Stats year</th>
        <th>Map</th>
        <th>Pack</th>
+       <th>Hares</th>
        <th>Trash</th>
        <th>Video</th>
       </tr>
@@ -38,18 +39,21 @@
             </td>
             <td>
              {{ trail.stats_year_id }}
-          </td>
-           <td>
+            </td>
+            <td>
              <a href="{% url 'trail' trail.trail_id %}map">Map</a>
-          </td>
-             <td>
+            </td>
+            <td>
             <a href="{% url 'trail' trail.trail_id %}pack">Pack</a>
-          </td>
-           <td>
-             <a href="/media/{{ trail.trash }}">Trash</a>
-          </td>
-           <td>
-             <a href="/media/{{ trail.video }}">Video</a>
+            </td>
+            <td>
+            <a href="{% url 'trail' trail.trail_id %}hares">Hares</a>
+            </td>
+            <td>
+             <a href="{% url 'trail' trail.trail_id %}trash">Trash</a>
+            </td>
+            <td>
+             <a href="{% url 'trail' trail.trail_id %}video">Video</a>
           </td>
        </tr>
      {% endfor %}
