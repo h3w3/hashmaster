@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.template import loader
 from stats.models import Trail, TrailPhoto, Pack, HasherStatus
 from stats.models import Hasher, Award, StatsYear
 
@@ -9,7 +8,7 @@ def index(request):
     return render(request, "stats/index.html",{"recent_trails": recent_trails})
 
 def trails(request):
-    all_trails = Trail.objects.filter(published_in_stats=True).order_by("-trail_id") # all trails by desc id
+    all_trails = Trail.objects.filter(published_in_stats=True).order_by("-trail_id") # all published trails by desc id
     return render(request, "stats/trails.html", {"all_trails": all_trails})
 
 def trail(request, trail_id):
@@ -31,7 +30,6 @@ def map(request, trail_id):
 
 def pack(request, trail_id):
     pack = Pack.objects.filter(trail_id=trail_id)
-    # all_hashers = Hasher.objects.filter("hash_name")
     return render(request, "stats/pack.html", {"pack": pack, "trail": trail_id})
 
 def trash(request, trail_id):
