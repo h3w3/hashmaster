@@ -16,6 +16,7 @@
 {% if all_hashers %}
      <table>
          <tr>
+             <th>Hasher mugshot</th>
              <th>Hasher name</th>
              <th>Hash nickname</th>
              <th>Nerd first</th>
@@ -24,6 +25,12 @@
          </tr>
           {% for hasher in all_hashers %}
              <tr>
+              <td>{% if hasher.mugshot %}
+               <img width=75 src="{{ hasher.mugshot.url }}">
+                {% else %}
+                   No picture
+                {% endif %}
+             </td>
                <td><a href="{% url 'hasher' hasher.id %}">{{ hasher.hash_name }}</a></td>
                <td>{{ hasher.hash_nickname }}</td>
                <td>{{ hasher.nerd_first }}</td>
