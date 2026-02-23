@@ -14,12 +14,13 @@ class AwardAdmin(admin.ModelAdmin):
     ordering = ['num_trails']
 
 class TrailAdmin(admin.ModelAdmin):
-    list_display = ('trail_id', 'trail_date', 'trail_description')
+    list_display = ('trail_id', 'trail_date', 'trail_description', 'published_in_stats')
     ordering = ['-trail_id']
 
 class PackAdmin(admin.ModelAdmin):
-    list_display = ('trail_id', 'hasher_id', 'hare')
-    ordering = ['trail_id']
+    list_display = ('trail_id', 'hasher_id', 'hare', 'wanker', 'frb', 'fbi', 'dfl', 'visitor',
+                    'transplant', 'new_boot', 'dnf')
+    ordering = ['-trail_id']
 
 class HasherAdmin(admin.ModelAdmin):
     list_display = ('hash_name', 'nerd_first', 'nerd_last', 'status', 'mugshot')
