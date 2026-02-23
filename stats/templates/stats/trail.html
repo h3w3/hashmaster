@@ -9,7 +9,8 @@
 <body>
 <img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
 <h1>Austin Hash House Harriers</h1>
-<h2><a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a> > {{trail.trail_id }}</h2>
+<p>A drinking club with a running problem doing trails around Austin, Texas on Sunday afternoons</p>
+<h2><a href="https://austinh3.org">Home</a> > <a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a> > {{trail.trail_id }}</h2>
 
 <hr/>
 <h1>Trail #{{ trail.trail_id }}</h1>
@@ -23,21 +24,27 @@
 
 <h3>Hares</h3>
 {% if hares %}
-<table>
-{% for hare in hares %}
-<tr>
-<td>{% if hare.hasher_id.mugshot %}
-<img width=100 src="{{ hare.hasher_id.mugshot.url }}">
-    {% else %}
-    No picture
-    {% endif %}
-</td>
-<td><a href="{% url 'hasher' hare.hasher_id.id %}">{{ hare.hasher_id.hash_name }}</a></td>
-</tr>
-{% endfor %}
-</table>
+
+   <table>
+   {% for hare in hares %}
+     <tr>
+         <td>
+        {% if hare.hasher_id.mugshot %}
+         <img width=100 src="{{ hare.hasher_id.mugshot.url }}">
+         {% else %}
+           No picture
+          {% endif %}
+          </td>
+      <td><a href="{% url 'hasher' hare.hasher_id.id %}">{{ hare.hasher_id.hash_name }}</a></td>
+
+      </tr>
+      {% endfor %}
+    </table>
+
 {% else %}
+
 <p>No hares for this trail.</p>
+
 {% endif %}
 
 <hr/>
@@ -45,56 +52,190 @@
 <h3>Trail Information</h3>
 <table>
     <tr>
+        <td><b>Stats Year</b></td>
+        <td>{{ trail.stats_year_id }}</td>
+    </tr>
+
+    <tr>
         <td><b>Trail Start</b></td>
         <td>{{ trail.trail_start }}</td>
     </tr>
+
     <tr>
         <td><b>Trail Start Location</b></td>
         <td>{{ trail.trail_start_location }}</td>
     </tr>
-     <tr>
+
+    <tr>
         <td><b>Checks</b></td>
         <td>{{ trail.checks }}</td>
     </tr>
-     <tr>
+
+    <tr>
         <td><b>Trail End</b></td>
         <td>{{ trail.trail_end }}</td>
     </tr>
+
     <tr>
         <td><b>Trail End Location</b></td>
         <td>{{ trail.trail_end_location }}</td>
     </tr>
+
     <tr>
-        <td><b>Distance</b></td>
-        <td>{{ trail.distance_turkey }}</td>
+        <td style="vertical-align: top;"><b>Distance</b></td>
+        <td>{{ trail.distance_turkey }}
+            {% if trail.distance_eagle > 0 %}
+                &nbsp; (Eagle: {{ trail.distance_eagle }} M)
+            {% endif %}
+            &nbsp; {{ trail.distance_comment }}
+        </td>
     </tr>
+
     <tr>
         <td><b>Temperature</b></td>
-        <td>{{ trail.temperature }}</td>
+        <td>{{ trail.temperature }} F</td>
     </tr>
+
+    <tr>
+        <td style="vertical-align: top;"><b>FRB</b></td>
+        <td>
+            {% if frb %}
+               {% for hasher in frb %}
+                 {% if hasher.hasher_id.mugshot %}
+                  <img width=75 style="vertical-align: middle" src="{{ hasher.hasher_id.mugshot.url  }}">
+                 {% else %}
+                   No Picture
+                 {% endif %}
+                       <a href="{% url 'hasher' hasher.hasher_id.id %}">{{ hasher.hasher_id.hash_name }}</a>
+                {% endfor %}
+          {% else %}
+              None
+            {% endif %}
+        </td>
+     </tr>
+
+    <tr>
+        <td style="vertical-align: top;"><b>FBI</b></td>
+        <td>
+            {% if fbi %}
+               {% for harriette in fbi %}
+                 {% if harriette.hasher_id.mugshot %}
+                  <img width=75 style="vertical-align: middle" src="{{ harriette.hasher_id.mugshot.url  }}">
+             {% else %}
+               No Picture
+             {% endif %}
+                       <a href="{% url 'hasher' harriette.hasher_id.id %}">{{ harriette.hasher_id.hash_name }}</a>
+                {% endfor %}
+          {% else %}
+              None
+            {% endif %}
+        </td>
+     </tr>
+
+    <tr>
+        <td style="vertical-align: top;"><b>DFL</b></td>
+        <td>
+            {% if dfl %}
+               {% for loser in dfl %}
+                 {% if loser.hasher_id.mugshot %}
+                  <img width=75 style="vertical-align: middle" src="{{ loser.hasher_id.mugshot.url  }}">
+             {% else %}
+                   No Picture
+                 {% endif %}
+                       <a href="{% url 'hasher' loser.hasher_id.id %}">{{ loser.hasher_id.hash_name }}</a>
+                {% endfor %}
+          {% else %}
+              None
+            {% endif %}
+        </td>
+     </tr>
+
     <tr>
         <td><b>Pack</a></b></td>
         <td><a href="{% url 'pack' trail.trail_id %}">{{ pack.count }} Hounds</a></td>
     </tr>
     <tr>
         <td><b>Map</b></td>
+        {% if trail.map  %}
         <td><a href="/media/{{ trail.map }}">"<img width=50% src="/media/{{ trail.map }}"></a></td>
+        {% else %}
+        <td>No map for trail # {{ trail }}</td>
+        {% endif %}
     </tr>
     <tr>
-        <td><b>Visitors</b></td>
-        {% if trail.visitors %}
+        <td style="vertical-align: top;"><b>Visitors</b></td>
+        {% if visitors %}
         <td>
-          {% for visitor in trail.visitors.all %}
-             <a href="{% url 'hasher' visitor.id %}">{{ visitor }}</a><br/>
+          {% for visitor in visitors.all %}
+             <a href="{% url 'hasher' visitor.hasher_id.id %}">{{ visitor.hasher_id.hash_name }}</a><br/>
           {% endfor %}
         </td>
+
         {% else %}
-        <td>No visitors</td>
+        <td>None</td>
+
+        {% endif %}
+    </tr>
+    <tr>
+        <td style="vertical-align: top;"><b>Transplants</b></td>
+        {% if transplants %}
+        <td>
+          {% for transplant in transplants.all %}
+             <a href="{% url 'hasher' transplant.hasher_id.id %}">{{ transplant.hasher_id.hash_name }}</a><br/>
+          {% endfor %}
+        </td>
+
+        {% else %}
+        <td>None</td>
+
         {% endif %}
     </tr>
      <tr>
         <td><b>Namings</b></td>
+         {% if trail.namings %}
         <td>{{ trail.namings }}</td>
+         {% else %}
+         <td> None</td>
+         {% endif %}
+    </tr>
+
+    <tr>
+        <td style="vertical-align: top;"><b>Auto-wankers</b></td>
+       {% if wankers %}
+        <td>
+          {% for wanker in wankers.all %}
+             <a href="{% url 'hasher'  wanker.hasher_id.id %}">{{ wanker.hasher_id.hash_name }}</a><br/>
+          {% endfor %}
+        </td>
+        {% else %}
+        <td>None</td>
+        {% endif %}
+    </tr>
+
+      <tr>
+        <td style="vertical-align: top;"><b>New Boots</b></td>
+         {% if new_boots %}
+        <td>
+          {% for new_boot in new_boots.all %}
+             <a href="{% url 'hasher'  new_boot.hasher_id.id %}">{{ new_boot.name_at_trail }}</a><br/>
+          {% endfor %}
+        </td>
+        {% else %}
+        <td>None</td>
+        {% endif %}
+    </tr>
+
+     <tr>
+        <td style="vertical-align: top;"><b>Did Not Finish</b></td>
+         {% if dnf %}
+        <td>
+          {% for did_not_finish in dnf.all %}
+             <a href="{% url 'hasher'  did_not_finish.hasher_id.id %}">{{ did_not_finish.hasher_id.hash_name }}</a><br/>
+          {% endfor %}
+        </td>
+        {% else %}
+        <td>Everyone finished!</td>
+        {% endif %}
     </tr>
 </table>
 
@@ -131,8 +272,99 @@ to get the original sized version.</p>
 
 {% endif %}
 
+<hr/>
+
+<h3>Stats Year To Date</h3>
+<p>Stats for this year - {{ trail.stats_year_id }} starting {{ trail.stats_year_id.start_date }}
+and ending {{ trail.stats_year_id.end_date }}</p>
+
+<table border="0">
+    <tr>
+    <td style="vertical-align: top;"><b>Longest Trail</b></td>
+    <td style="text-align: lefrt">
+        {% for trail in ytd_longest %}
+        {{ trail.distance_turkey }} &nbsp;&nbsp; <a href="{% url 'trail' trail.trail_id %}">{{ trail.trail_id }}</a>  <i>{{ trail.trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+    <tr>
+    <td style="vertical-align: top;"><b>Shortest Trail</b></td>
+    <td style="text-align: left">
+        {% for trail in ytd_shortest %}
+        {{ trail.distance_turkey }} &nbsp;&nbsp; <a href="{% url 'trail' trail.trail_id %}">{{ trail.trail_id }}</a> <i>{{ trail.trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+    <tr>
+    <td style="vertical-align: top;"><b>Warmest Trail</b></td>
+    <td style="text-align: left">
+        {% for trail in ytd_warmest %}
+        {{ trail.temperature }} &nbsp;&nbsp; <a href="{% url 'trail' trail.trail_id %}">{{ trail.trail_id }}</a> <i>{{ trail.trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+     <tr>
+    <td style="vertical-align: top;"><b>Coldest Trail</b></td>
+    <td style="text-align: left">
+        {% for trail in ytd_coldest %}
+        {{ trail.temperature }} &nbsp;&nbsp; <a href="{% url 'trail' trail.trail_id %}">{{ trail.trail_id }}</a> <i>{{ trail.trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+    <tr>
+        <td style="vertical-align: top"><b>FRB</b></td>
+        <td style="text:align: left">
+            {% if ytd_frb %}
+               {% for frb in ytd_frb %}
+               {{ frb.count }} &nbsp;&nbsp;&nbsp;&nbsp; <a href="{% url 'hasher' frb.hasher_id %}">{{ frb.name_at_trail }}</a>
+               </br>
+               {% endfor %}
+            {% else %}
+               Not enough data for FRB
+            {% endif %}
+        </td>
+    </tr>
+
+     <tr>
+        <td style="vertical-align: top"><b>FBI</b></td>
+        <td style="text:align: left">
+            {% if ytd_fbi %}
+               {% for fbi in ytd_fbi %}
+               {{ fbi.count }} &nbsp;&nbsp;&nbsp;&nbsp; <a href="{% url 'hasher' fbi.hasher_id %}">{{ fbi.name_at_trail }}</a>
+               </br>
+               {% endfor %}
+            {% else %}
+               Not enough data for FBI
+            {% endif %}
+        </td>
+    </tr>
+
+         <tr>
+        <td style="vertical-align: top"><b>DFL</b></td>
+        <td style="text:align: left">
+            {% if ytd_dfl %}
+               {% for dfl in ytd_dfl %}
+               {{ dfl.count }} &nbsp;&nbsp;&nbsp;&nbsp; <a href="{% url 'hasher' dfl.hasher_id %}">{{ dfl.name_at_trail }}</a>
+               </br>
+               {% endfor %}
+            {% else %}
+               Not enough data for DFL
+            {% endif %}
+        </td>
+    </tr>
+
+</table>
+
 <hr />
-<i>Hashmaster v.0.1.69</i>
+<i>Hashmaster v.0.2.69</i>
 
 </body>
 </html>

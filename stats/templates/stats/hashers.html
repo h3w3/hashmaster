@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -9,19 +10,18 @@
 <body>
 <img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
 <h1>Austin Hash House Harriers</h1>
-<h2><a href="{% url 'index' %}">Stats</a> > Hashers</h2>
+<p>A drinking club with a running problem doing trails around Austin, Texas on Sunday afternoons</p>
+<h2><a href="https://austinh3.org">Home</a> > <a href="{% url 'index' %}">Stats</a> > Hashers</h2>
 <hr/>
 
-<h3>Active and Lost on Trail</h3>
+<h3>Active and Lost on Trail ({{ all_hashers.count }})</h3>
 {% if all_hashers %}
      <table>
          <tr>
-             <th>Hasher mugshot</th>
+             <th>Mugshot</th>
              <th>Hasher name</th>
-             <th>Hash nickname</th>
-             <th>Nerd first</th>
-             <th>Nerd last</th>
-             <th>Hash cash balance</th>
+             <th>Nickname</th>
+             <th>Hash cash</th>
          </tr>
           {% for hasher in all_hashers %}
              <tr>
@@ -33,9 +33,7 @@
              </td>
                <td><a href="{% url 'hasher' hasher.id %}">{{ hasher.hash_name }}</a></td>
                <td>{{ hasher.hash_nickname }}</td>
-               <td>{{ hasher.nerd_first }}</td>
-               <td>{{ hasher.nerd_last }}</td>
-               <td>{{ hasher.hash_cash_balance }}</td>
+               <td>${{ hasher.hash_cash_balance|floatformat:"2"|intcomma }}</td>
              </tr>
            {% endfor %}
      </table>
