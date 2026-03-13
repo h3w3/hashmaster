@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from . import __version__ as APP_VERSION
+from . import __kennel__ as APP_KENNEL
 
-admin.site.site_header = "Hashmaster Mismanagement"  # Changes the main header
+admin.site.site_header = "Hashmaster Mismanagement"  # Changes the main header in Admin interface
 admin.site.site_title = "Hashmaster"    # Changes the browser tab title
-admin.site.index_title = "Version 0.0.69 for Austin H3"    # Changes the title on the admin index page
+admin.site.index_title = "Version " + APP_VERSION + " for " +  APP_KENNEL # Lists Admin interface deets
 
 urlpatterns = [
     path("stats/", include("stats.urls")),
