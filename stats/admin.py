@@ -14,7 +14,7 @@ class AwardAdmin(admin.ModelAdmin):
     ordering = ['num_trails']
 
 class TrailAdmin(admin.ModelAdmin):
-    list_display = ('trail_id', 'trail_date', 'trail_description', 'published_in_stats')
+    list_display = ('trail_id', 'stats_year_id__year', 'trail_date', 'trail_description', 'published_in_stats')
     ordering = ['-trail_id']
 
 class PackAdmin(admin.ModelAdmin):
@@ -31,7 +31,7 @@ class HasherStatusAdmin(admin.ModelAdmin):
     ordering = ['name']
 
 class TrailPhotoAdmin(admin.ModelAdmin):
-     list_display = ('trail_id', 'caption', 'attribution', 'photo')
+     list_display = ('trail_id', 'photo', 'caption', 'attribution')
 
 class RoleAdmin(admin.ModelAdmin):
      list_display = ('role_name', 'role_description')
