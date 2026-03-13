@@ -1,3 +1,5 @@
+from itertools import count
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -33,26 +35,36 @@ def trail(request, trail_id):
     fbi = Pack.objects.filter(trail_id=trail_id, fbi=True)
     dfl = Pack.objects.filter(trail_id=trail_id, dfl=True)
     dnf = Pack.objects.filter(trail_id=trail_id, dnf=True)
-    # Stats year to date aggregate
-    ytd_longest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by("-distance_turkey")[:3]
-    ytd_shortest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by("distance_turkey")[:3]
-    #ytd_largest = Pack.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by(ytd_biggest.count)[:3]
-    #ytd_smallest = Pack.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by("distance_turkey")[:3]
-    ytd_warmest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by("-temperature")[:3]
-    ytd_coldest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).order_by("temperature")[:3]
+    # Stats year to date aggregate, filtered by trails up to the current trail and published=True
+    ytd_trails = Trail.objects.filter(stats_year_id=trail.stats_year_id,trail_id__lte=trail.trail_id)
+    ytd_longest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, published_in_stats=True).order_by("-distance_turkey")[:3]
+    ytd_shortest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, published_in_stats=True).order_by("distance_turkey")[:3]
+    ytd_largest = (Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, trail_id__published_in_stats=True)
+            .values('trail_id', 'trail_id__trail_date').annotate(count=Count('hasher_id'))).filter(count__gte=1).order_by("-count")[:3]
+    ytd_smallest = (Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, trail_id__published_in_stats=True)
+            .values('trail_id', 'trail_id__trail_date').annotate(count=Count('hasher_id'))).filter(count__gte=1).order_by("count")[:3]
+    ytd_warmest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, published_in_stats=True).order_by("-temperature")[:3]
+    ytd_coldest = Trail.objects.filter(stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, published_in_stats=True).order_by("temperature")[:3]
     ytd_frb = (Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, frb=True).values(
-        'hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=1)
+        'hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=3).order_by("-count")[:3]
     ytd_fbi = (
         Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, fbi=True).values(
-        'hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=1)
+        'hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=3).order_by("-count")[:3]
     ytd_dfl = (
-        Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, dfl=True).values(
-            'hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=1)
+        Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id, dfl=True)
+          .values('hasher_id', 'name_at_trail').annotate(count=Count('hasher_id'))).filter(count__gte=3).order_by("-count")[:3]
+
+    # new unfinished
+    ytd_perfect = Pack.objects.filter(trail_id__stats_year_id=trail.stats_year_id, trail_id__lte=trail.trail_id).values('hasher_id', 'name_at_trail').annotate(count=Count('hasher_id')).filter(count__gte=3).order_by("-count")[:3]
+    # new
+
     return render(request, "stats/trail.html", {"trail": trail, "hares": hares,
                                          "trail_photos": trail_photos ,"hashers": hashers,
                                          "pack": pack,   "wankers": wankers, "visitors": visitors,
                                          "transplants": transplants, "new_boots": new_boots,
                                          "frb": frb, "fbi": fbi, "dfl": dfl, "dnf": dnf,
+                                         "ytd_trails": ytd_trails, "ytd_largest": ytd_largest,
+                                         "ytd_smallest": ytd_smallest,
                                          "ytd_longest": ytd_longest, "ytd_shortest": ytd_shortest,
                                          "ytd_warmest": ytd_warmest, "ytd_coldest": ytd_coldest,
                                          "ytd_frb": ytd_frb, "ytd_fbi": ytd_fbi, "ytd_dfl": ytd_dfl  })
