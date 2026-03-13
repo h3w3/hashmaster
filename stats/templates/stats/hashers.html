@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
 </head>
 <body>
-<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
-<h1>Austin Hash House Harriers</h1>
-<p>A drinking club with a running problem doing trails around Austin, Texas on Sunday afternoons</p>
-<h2><a href="https://austinh3.org">Home</a> > <a href="{% url 'index' %}">Stats</a> > Hashers</h2>
+
+{% include 'stats/includes/header.html' %}
+
+<h2><a href="{{ APP_HOMEPAGE }}">Home</a> > <a href="{% url 'index' %}">Stats</a> > Hashers</h2>
 <hr/>
 
 <h3>Active and Lost on Trail ({{ all_hashers.count }})</h3>
@@ -42,8 +42,7 @@
     <p>No active hashers are available.</p>
 {% endif %}
 
-<hr />
-<footer>Hashmaster v.0.2.69</footer>
+{% include 'stats/includes/footer.html' %}
 
 </body>
 </html>

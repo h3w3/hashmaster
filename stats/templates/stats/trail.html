@@ -7,14 +7,18 @@
     <link rel="stylesheet" href="{% static 'stats/css/main.css' %}">
 </head>
 <body>
-<img src="https://austinh3.org/wp-content/uploads/2016/11/AustinH3Logo.gif" sizes="32x32""/>
-<h1>Austin Hash House Harriers</h1>
-<p>A drinking club with a running problem doing trails around Austin, Texas on Sunday afternoons</p>
-<h2><a href="https://austinh3.org">Home</a> > <a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a> > {{trail.trail_id }}</h2>
+
+{% include 'stats/includes/header.html' %}
+
+<h2><a href="{{ APP_HOMEPAGE }}">Home</a> > <a href="{% url 'index' %}">Stats</a> > <a href="{% url 'trails' %}">Trails</a> > {{trail.trail_id }}</h2>
 
 <hr/>
 <h1>Trail #{{ trail.trail_id }}</h1>
 <h2>{{ trail.trail_date }} - {{ trail.trail_description }}</h2>
+
+{% if not trail.published_in_stats %}
+  <p style="color:red; font-weight: bold">This trail has incomplete data and is not currently published in any stats</p>
+{% endif %}
 
 {% if trail.video %}
 <video controls width="640" height="480">
@@ -202,14 +206,14 @@
     <tr>
         <td style="vertical-align: top;"><b>Auto-wankers</b></td>
        {% if wankers %}
-        <td>
-          {% for wanker in wankers.all %}
-             <a href="{% url 'hasher'  wanker.hasher_id.id %}">{{ wanker.hasher_id.hash_name }}</a><br/>
-          {% endfor %}
-        </td>
-        {% else %}
-        <td>None</td>
-        {% endif %}
+          <td>
+            {% for wanker in wankers.all %}
+               <a href="{% url 'hasher'  wanker.hasher_id.id %}">{{ wanker.hasher_id.hash_name }}</a><br/>
+            {% endfor %}
+          </td>
+       {% else %}
+          <td>None</td>
+       {% endif %}
     </tr>
 
       <tr>
@@ -241,7 +245,7 @@
 
 <hr/>
 
-<h3>Photos</h3>
+<h3>Trail Photos</h3>
 
 {% if trail_photos %}
 
@@ -276,12 +280,14 @@ to get the original sized version.</p>
 
 <h3>Stats Year To Date</h3>
 <p>Stats for this year - {{ trail.stats_year_id }} starting {{ trail.stats_year_id.start_date }}
-and ending {{ trail.stats_year_id.end_date }}</p>
+and ending {{ trail.stats_year_id.end_date }}. For these stats there have been {{ ytd_trails.count }} trails so far
+from <a href="{% url 'trail' ytd_trails.first %}">{{ ytd_trails.first }}</a> on {{ ytd_trails.first.trail_date }} to
+this trail <a href="{% url 'trail' trail.trail_id%}">{{ trail.trail_id }}</a> on {{ trail.trail_date }}.</p>
 
-<table border="0">
+<table>
     <tr>
     <td style="vertical-align: top;"><b>Longest Trail</b></td>
-    <td style="text-align: lefrt">
+    <td style="text-align: left">
         {% for trail in ytd_longest %}
         {{ trail.distance_turkey }} &nbsp;&nbsp; <a href="{% url 'trail' trail.trail_id %}">{{ trail.trail_id }}</a>  <i>{{ trail.trail_date|date:"M d" }}</i>
         </br>
@@ -300,6 +306,26 @@ and ending {{ trail.stats_year_id.end_date }}</p>
     </tr>
 
     <tr>
+    <td style="vertical-align: top;"><b>Largest Pack</b></td>
+    <td style="text-align: left">
+        {% for pack in ytd_largest %}
+        {{ pack.count }} &nbsp;&nbsp; <a href="{% url 'trail' pack.trail_id %}">{{ pack.trail_id }}</a>  <i>{{ pack.trail_id__trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+     <tr>
+    <td style="vertical-align: top;"><b>Smallest Pack</b></td>
+    <td style="text-align: left">
+        {% for pack in ytd_smallest %}
+        {{ pack.count }} &nbsp;&nbsp; <a href="{% url 'trail' pack.trail_id %}">{{ pack.trail_id }}</a>  <i>{{ pack.trail_id__trail_date|date:"M d" }}</i>
+        </br>
+        {% endfor %}
+    </td>
+    </tr>
+
+    <tr>
     <td style="vertical-align: top;"><b>Warmest Trail</b></td>
     <td style="text-align: left">
         {% for trail in ytd_warmest %}
@@ -309,7 +335,7 @@ and ending {{ trail.stats_year_id.end_date }}</p>
     </td>
     </tr>
 
-     <tr>
+    <tr>
     <td style="vertical-align: top;"><b>Coldest Trail</b></td>
     <td style="text-align: left">
         {% for trail in ytd_coldest %}
@@ -320,7 +346,7 @@ and ending {{ trail.stats_year_id.end_date }}</p>
     </tr>
 
     <tr>
-        <td style="vertical-align: top"><b>FRB</b></td>
+        <td style="vertical-align: top"><b>Front Running Bastard</b></td>
         <td style="text:align: left">
             {% if ytd_frb %}
                {% for frb in ytd_frb %}
@@ -328,13 +354,13 @@ and ending {{ trail.stats_year_id.end_date }}</p>
                </br>
                {% endfor %}
             {% else %}
-               Not enough data for FRB
+               Not enough data (need >=3)
             {% endif %}
         </td>
     </tr>
 
      <tr>
-        <td style="vertical-align: top"><b>FBI</b></td>
+        <td style="vertical-align: top"><b>First Bitch In</b></td>
         <td style="text:align: left">
             {% if ytd_fbi %}
                {% for fbi in ytd_fbi %}
@@ -342,13 +368,13 @@ and ending {{ trail.stats_year_id.end_date }}</p>
                </br>
                {% endfor %}
             {% else %}
-               Not enough data for FBI
+               Not enough data (need >=3)
             {% endif %}
         </td>
     </tr>
 
-         <tr>
-        <td style="vertical-align: top"><b>DFL</b></td>
+    <tr>
+        <td style="vertical-align: top"><b>Dead Fucking Last</b></td>
         <td style="text:align: left">
             {% if ytd_dfl %}
                {% for dfl in ytd_dfl %}
@@ -356,15 +382,14 @@ and ending {{ trail.stats_year_id.end_date }}</p>
                </br>
                {% endfor %}
             {% else %}
-               Not enough data for DFL
+               Not enough data (need >=3)
             {% endif %}
         </td>
     </tr>
 
 </table>
 
-<hr />
-<i>Hashmaster v.0.2.69</i>
+{% include 'stats/includes/footer.html' %}
 
 </body>
 </html>
